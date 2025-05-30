@@ -1,0 +1,152 @@
+{
+  "intents": [
+    {
+      "tag": "Greeting",
+      "patterns": ["Hello", "Hi", "Hey", "Good morning", "Good evening"],
+      "responses": [
+        "Hi there! How can I assist you today?",
+        "Hello! Need help with sign language learning?",
+        "Hey! Ask me anything about the ISL learning system.",
+        "Good morning! Ready to learn?",
+        "Good evening! How can I support your learning?"
+      ]
+    },
+    {
+      "tag": "AboutBot",
+      "patterns": ["Who are you?", "What can you do?", "What's up?", "How are you?", "What’s your name?", "Are you smart?", "Do you sleep?", "You sound cool"],
+      "responses": [
+        "I'm an AI-powered chatbot for the ISL education platform.",
+        "I can answer your questions about the platform and guide your learning.",
+        "Just helping awesome users like you learn ISL better!",
+        "Doing great! Always ready to chat. How about you?",
+        "I’m your ISL learning buddy — you can call me SignBot!",
+        "Well, I’ve been trained by some brilliant minds — so yeah, I’d say so 😄",
+        "Nope! I'm always here whenever you need help. Day or night.",
+        "Thanks! I’ve been practicing my swag 😎"
+      ]
+    },
+    {
+      "tag": "UserAppreciation",
+      "patterns": ["You’re awesome", "I like this bot", "Can we be friends?", "Thanks buddy"],
+      "responses": [
+        "Aww, thank you! You’re pretty awesome yourself 😉",
+        "I like you too! Let’s make learning fun.",
+        "Of course! Learning is more fun with friends.",
+        "Anytime, friend! Always here for you."
+      ]
+    },
+    {
+      "tag": "LearningHelp",
+      "patterns": ["I'm stuck", "Teach me something new", "I’m bored", "What can I ask you?"],
+      "responses": [
+        "No worries, I got you. Ask me anything or try a different module.",
+        "Sure! How about we start with numbers in sign language?",
+        "Let’s learn something new together or try a sign challenge!",
+        "Anything about sign language, this platform, or how to get started!"
+      ]
+    },
+    {
+      "tag": "Signlang",
+      "patterns": [
+        "What is sign language?"
+      ],
+      "responses": [
+        "Sign language is a visual language using hand gestures and facial expressions.",
+        
+        "Yes, we provide sign language recognition for alphabets and numbers."
+        
+      ]
+    },
+    {
+      "tag": "ProjectInfo",
+      "patterns": [
+       "How does this platform help?", "Can I speak instead of typing?",
+        "What features are available?", "Can I learn using videos?", "Is Tamil supported?", 
+        "How do I track my progress?", "Is this platform for deaf users?", "Can I talk to other users?",
+        "How to give feedback?", "Who developed this platform?", "Can this system understand ISL numbers?",
+        "How to start learning?", "Do I need to register?", "Is it free?", "Can I learn alphabets?",
+        "What is text-to-video?", "Do you support quizzes?", "Is real-time feedback available?",
+        "Which languages can I learn in?", "Can I access this on my mobile?", "What if I face issues?",
+        "How does the chatbot work?", "Do you have sign language dictionary?", "Can I give spoken input?",
+        "How do you detect signs?", "Can I learn in offline mode?", "Do you store user data?"
+      ],
+      "responses": [
+        
+        "It converts sign language to text, speech to text, and provides personalized learning.",
+        "Yes, speech input is supported and converted to text using Google’s speech-to-text.",
+        "You can use sign recognition, text-to-video, speech-to-text, dashboards, and more.",
+        "Yes! Text can be converted into videos for better visual understanding.",
+        "Yes, we support multilingual learning including Tamil, Hindi, and English.",
+        "The dashboard shows your learning progress and gives real-time feedback.",
+        "Yes! It’s specially built for deaf and hard-of-hearing learners.",
+        "Yes, there’s a community and collaboration feature for peer learning.",
+        "You can share feedback through the dashboard's feedback section.",
+        "It’s built by a passionate team using AI, computer vision, and NLP.",
+       
+        "Simply sign in, choose your preferred language, and access the learning modules.",
+        "Yes, create an account to track your progress and access personalized content.",
+        "Yes! The platform is free to use for all deaf learners.",
+        "Yes, we provide sign language recognition for alphabets and numbers.",
+        "It converts typed text into videos with visual explanation using AI.",
+        "Yes, each module includes interactive assessments to test your knowledge.",
+        "Yes! Your learning dashboard provides real-time feedback and suggestions.",
+        "Currently we support English, Tamil, Hindi, Telugu, French, and Spanish.",
+        "Yes! The platform supports both web and mobile access.",
+        "You can contact support or ask the chatbot for help anytime.",
+        "I use trained AI with language translation and context understanding.",
+        "Yes, the platform includes a module for ISL sign dictionary lookup.",
+        "Absolutely! Just click the mic button and start speaking.",
+        "We use MediaPipe with deep learning to recognize hand gestures from a webcam.",
+        "Some features may require internet, but we are working on offline support.",
+        "Only progress and preferences are stored to improve your learning experience."
+      ]
+    },
+    {
+      "tag": "Accessibility",
+      "patterns": [
+        "I can't speak, can I still use this?", "Is voice input mandatory?", "Can I reply using gestures?",
+        "What if I can’t use the mic?", "I'm mute. Will this work for me?", "How do I communicate with others?",
+        "Can blind users access this?", "I can't see the screen", "How do I give commands if I can’t see?",
+        "Is this platform screen reader compatible?", "Can you read content aloud?", "I’m visually impaired. Can I still learn?"
+      ],
+      "responses": [
+        "Absolutely! You can use text or sign language input to interact.",
+        "Not at all! You can type or use sign gestures instead.",
+        "Yes, our system recognizes sign language through your webcam.",
+        "No worries! Just type your questions and I’ll reply.",
+        "Yes! This platform is designed for mute users as well.",
+        "Use the community chat or type messages — everyone’s welcome.",
+        "Yes! The platform includes voice input and screen reader friendly UI.",
+        "Try enabling your screen reader or use voice commands.",
+        "You can speak to the system using the mic — it’ll respond with voice.",
+        "Yes! Most sections are optimized for accessibility.",
+        "Yes, I can speak all responses aloud using text-to-speech.",
+        "Of course! With voice interaction and audio feedback, you’re fully supported."
+      ]
+    },
+    {
+      "tag": "Exit",
+      "patterns": [
+        "Bye", "Thanks", "Thank you", "Okay bye", "See you later", "I’m done for now", 
+        "Catch you later", "Will talk to you tomorrow", "I’ll come back later",
+        "Thanks for helping", "That’s all for now", "I need a break", "You're the best", "End the chat"
+      ],
+      "responses": [
+        "See you soon! Happy learning.",
+        "You're welcome! Let me know if you need more help.",
+        "Anytime! Keep learning.",
+        "Bye! Keep learning and stay awesome! 👋",
+        "See you soon! Come back whenever you need help.",
+        "No worries! Come back when you’re ready to learn more.",
+        "Catch you later! Happy signing 🤟",
+        "I’ll be here! Ready whenever you are 😄",
+        "Sure! I’ll be here waiting. Keep shining ✨",
+        "Always happy to help. You're doing great!",
+        "Awesome! Rest well and come back stronger!",
+        "Of course! Take care and come back when you’re ready.",
+        "You too da! Let’s learn more next time 💙",
+        "Chat closed! Have a great day ahead 🌞"
+      ]
+    }
+  ]
+}

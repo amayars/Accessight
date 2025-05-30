@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #181818;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .chat-section {
+            background-color: #2c2c2c;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-grow: 1;
+            height: 100%;
+        }
+
+        .chatbox {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chatbox .user-message {
+            align-self: flex-end;
+            background-color: #383535;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 15px;
+            max-width: 75%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-size: 1.1rem;
+        }
+
+        .chatbox .bot-message {
+            align-self: flex-start;
+            background-color: #333;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 15px;
+            max-width: 75%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            font-size: 1.1rem;
+        }
+
+        .user-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-input form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .user-input input[type="text"] {
+            flex-grow: 1;
+            padding: 12px;
+            font-size: 1.1rem;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .user-input button[type="submit"] {
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            padding: 12px 16px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .user-input button:hover {
+            background-color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .attach-btn {
+            display: inline-block;
+            padding: 10px 12px;
+            background-color: #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #555;
+            font-size: 1.3rem;
+            transition: background 0.3s ease;
+        }
+
+        .attach-btn:hover {
+            background-color: #ccc;
+        }
+
+        input[type="file"]#file-upload {
+            display: none;
+        }
+
+        .mic-btn {
+            background-color: #ffffff;
+            color: rgb(8, 8, 8);
+            padding: 12px 14px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .mic-btn:hover {
+            background-color: #fffefb;
+            transform: scale(1.1);
+        }
+
+        @keyframes mic-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .mic-btn.listening {
+            background-color: #ffffff !important;
+            animation: mic-pulse 1s infinite;
+        }
+
+        .chat-section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-section::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .chat-section::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .sign-dictionary-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffffff;
+            color: rgb(8, 8, 8);
+            padding: 12px 16px;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .sign-dictionary-btn:hover {
+            background-color: #fffefb;
+            transform: scale(1.1);
+        }
+
+        .sign-dictionary-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #2c2c2c;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            width: 100%;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .modal-content .video-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal-content .video-container video {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .close-btn {
+            background-color: #fff;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .camera-btn {
+            background-color: #ffffff;
+            color: #000;
+            padding: 12px 14px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        
+        .camera-btn:hover {
+            background-color: #fffefb;
+            transform: scale(1.1);
+        }
+        </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ACCESSIGHT</h1>
+        </header>
+
+
+        <section class="chat-section">
+            <div class="chatbox" id="chatbox-messages">
+                {% if user_message %}
+                <div class="user-message"><strong>You:</strong> {{ user_message }}</div>
+                {% endif %}
+                {% if bot_reply %}
+                <div class="bot-message"><strong>Bot:</strong> {{ bot_reply }}</div>
+                {% endif %}
+            </div>
+
+            <div class="user-input">
+                <form id="chat-form" action="/pdf_text" method="POST" enctype="multipart/form-data">
+                    <label for="file-upload" class="attach-btn" title="Attach PDF">
+                        <i class="fas fa-paperclip"></i>
+                    </label>
+                    <input type="file" id="file-upload" name="pdf" accept=".pdf" />
+                    <select id="language-select" name="language" style="padding: 10px; border-radius: 20px; background-color: #333; color: #fff; border: 1px solid #ccc;">
+                        <option value="en">English</option>
+                        <option value="hi">Hindi</option>
+                        <option value="ta">Tamil</option>
+                    </select>
+
+                    <input type="text" id="user-message" name="message" placeholder="Type a message..." required />
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    <button type="button" id="speak-btn" class="mic-btn"><i class="fas fa-microphone"></i></button>
+					<a href = '/generate_frames'>
+                    <button type="button" id="camera-btn" class="camera-btn" title="Open Camera"><i class="fas fa-camera"></i></button>
+					</a>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <button type="button" class="sign-dictionary-btn" id="openModalBtn" title="Sign Language Translator">
+        <i class="fas fa-sign-language"></i>
+    </button>
+    
+    <div class="sign-dictionary-modal" id="sign-dictionary-modal">
+        <div class="modal-content">
+            <h2>Sign Language Translator</h2>
+            <form id="signForm" class="mb-3">
+                <input type="text" id="input_text" placeholder="Enter text..." required style="width: 100%; padding: 10px; border-radius: 5px; margin-bottom: 10px;" />
+                <button type="submit" class="btn btn-primary" style="padding: 8px 16px; border-radius: 5px;">Translate</button>
+            </form>
+            
+            <div class="video-container" id="videoContainer"></div>
+            <button class="close-btn">Close</button>
+        </div>
+    </div>
+
+    <div class="sign-dictionary-modal" id="webcam-modal">
+        <div class="modal-content">
+            <h2>Webcam View</h2>
+            <video id="webcam-video" autoplay playsinline style="width: 100%; border-radius: 10px;"></video>
+            <button class="close-btn" id="close-webcam-btn">Close</button>
+        </div>
+    </div>
+
+    <script>
+    function sendMessageToChat(userMessage) {
+        $.ajax({
+            url: '/generate_frames',
+            type: 'POST',
+            data: JSON.stringify({ message: userMessage }),
+            contentType: 'application/json',
+            success: function(response) {
+                let chatBox = document.getElementById("chatbox-messages");
+                chatBox.innerHTML += `<div class="user-message">${response.message}</div>`;
+                scrollToBottom();
+            }
+        });
+    }
+
+    function appendMessage(message, isBot = true) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add(isBot ? 'bot-message' : 'user-message');
+        messageElement.innerText = message;
+        document.getElementById('chatbox-messages').appendChild(messageElement);
+        scrollToBottom();
+    }
+
+    function scrollToBottom() {
+        const chatbox = document.getElementById('chatbox-messages');
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function playVideo(videoFile) {
+        const videoUrl = `/static/video/${videoFile}?t=${new Date().getTime()}`;
+        const videoElement = document.createElement('video');
+        videoElement.src = videoUrl;
+        videoElement.controls = true;
+        videoElement.style.maxWidth = '100%';
+        videoElement.style.borderRadius = '10px';
+
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('bot-message');
+        wrapper.appendChild(videoElement);
+        document.getElementById('chatbox-messages').appendChild(wrapper);
+        scrollToBottom();
+    }
+
+    $('#chat-form').on('submit', function(event) {
+        event.preventDefault();
+        const fileInput = $('#file-upload')[0];
+        if (fileInput.files.length > 0) {
+            this.submit();
+            return;
+        }
+
+        const userMessage = $('#user-message').val().trim();
+        if (userMessage === "") return;
+
+        appendMessage(userMessage, false);
+
+        const promptToVideo = {
+            "car": "car_road.mp4",
+            "road": "car_road.mp4",
+            "countryside": "windmill.mp4",
+            "windmill": "windmill.mp4",
+            "cloudy sky": "windmill.mp4",
+            "breeze": "windmill.mp4"
+        };
+
+        let matchedVideo = null;
+        const userInput = userMessage.toLowerCase();
+
+        for (const keyword in promptToVideo) {
+            if (userInput.includes(keyword)) {
+                matchedVideo = promptToVideo[keyword];
+                break;
+            }
+        }
+
+        const selectedLang = $('#language-select').val();
+
+        if (matchedVideo) {
+            playVideo(matchedVideo);
+        } else {
+            $.ajax({
+                url: '/chatbot',
+                method: 'POST',
+                data: { message: userMessage, language: selectedLang },
+                success: function(response) {
+                    appendMessage(response.response);
+                    if (response.audio_file) {
+                        playAudio(response.audio_file);
+                    }
+                },
+                error: function() {
+                    appendMessage("Sorry, I couldn't understand that.", true);
+                }
+            });
+        }
+
+        $('#user-message').val('');
+        $('#file-upload').val('');
+    });
+
+    $('#speak-btn').on('click', function() {
+        const micBtn = $(this);
+        micBtn.addClass('listening');
+
+        $.ajax({
+            url: '/speak',
+            method: 'GET',
+            success: function(response) {
+                appendMessage(response.speech, false);
+                appendMessage(response.result, true);
+                if (response.audio_file) {
+                    playAudio(response.audio_file);
+                }
+                $('#user-message').focus();
+            },
+            error: function() {
+                alert('Error occurred with speech recognition.');
+            },
+            complete: function() {
+                micBtn.removeClass('listening');
+            }
+        });
+    });
+
+    function playAudio(audioFileUrl) {
+        const audio = new Audio(audioFileUrl + '?t=' + new Date().getTime());
+        audio.play();
+    }
+
+    $('#file-upload').on('change', function () {
+        if (this.files.length > 0) {
+            const form = $('#chat-form')[0];
+            const formData = new FormData(form);
+
+            $.ajax({
+                url: '/pdf_text',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.original_text) {
+                        appendMessage("📄 Original PDF Text:\n" + response.original_text, true);
+                    }
+                    if (response.summary) {
+                        appendMessage("📝 Summary:\n" + response.summary, true);
+                    }
+                    if (response.audio_file) {
+                        playAudio(response.audio_file);
+                    }
+                },
+                error: function() {
+                    appendMessage("Failed to process the uploaded PDF.", true);
+                }
+            });
+
+            $('#user-message').val('');
+            $('#file-upload').val('');
+        }
+    });
+
+    $(document).ready(function () {
+        $('#openModalBtn').click(function () {
+            $('#sign-dictionary-modal').css('display', 'flex');
+        });
+
+        $('.close-btn').click(function () {
+            $('.sign-dictionary-modal').hide();
+            $('#videoContainer').empty();
+            $('#input_text').val('');
+        });
+
+        $('#signForm').on('submit', function (e) {
+            e.preventDefault();
+            const textInput = $('#input_text').val().trim();
+            if (!textInput) return;
+
+            $.post('/learning_path', { input_text: textInput }, function (data) {
+                const container = $('#videoContainer');
+                container.empty();
+
+                if (data.video_urls && data.video_urls.length > 0) {
+                    const videoElement = document.createElement('video');
+                    videoElement.autoplay = true;
+                    videoElement.muted = true;
+                    videoElement.playsInline = true;
+                    videoElement.style.width = '100%';
+                    videoElement.style.borderRadius = '10px';
+                    container.append(videoElement);
+
+                    let currentIndex = 0;
+
+                    function playNextVideo() {
+                        if (currentIndex >= data.video_urls.length) return;
+
+                        videoElement.src = data.video_urls[currentIndex];
+                        videoElement.load();
+                        videoElement.play().catch(err => console.error('Autoplay failed:', err));
+
+                        currentIndex++;
+                    }
+
+                    videoElement.addEventListener('ended', playNextVideo);
+
+                    playNextVideo();
+                } else {
+                    container.append('<p>No sign language videos found for the entered text.</p>');
+                }
+            });
+        });
+    });
+</script>
+
+
+
+    <div class="sign-dictionary-modal" id="sign-dictionary-modal">
+        <div class="modal-content">
+            <h2>Sign Language Dictionary</h2>
+            <div class="video-container" id="videoContainer"></div>
+            <button class="close-btn">Close</button>
+        </div>
+    </div>
+</body>
+</html>
